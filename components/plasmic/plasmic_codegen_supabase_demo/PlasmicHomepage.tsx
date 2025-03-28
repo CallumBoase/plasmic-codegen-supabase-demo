@@ -63,6 +63,7 @@ import * as plasmicAuth from "@plasmicapp/react-web/lib/auth";
 import { usePlasmicDataSourceContext } from "@plasmicapp/data-sources-context";
 
 import PageLayout from "../../PageLayout"; // plasmic-import: vO_RT_BPT1cq/component
+import { SupabaseProvider } from "plasmic-supabase"; // plasmic-import: a5ggmYcEItw6/codeComponent
 
 import "@plasmicapp/react-web/lib/plasmic.css";
 
@@ -87,7 +88,7 @@ export type PlasmicHomepage__OverridesType = {
   pageLayout?: Flex__<typeof PageLayout>;
   section?: Flex__<"section">;
   h1?: Flex__<"h1">;
-  text?: Flex__<"div">;
+  supabaseProvider?: Flex__<typeof SupabaseProvider>;
 };
 
 export interface DefaultHomepageProps {}
@@ -166,37 +167,111 @@ function PlasmicHomepage__RenderFunc(props: {
           >
             <DataCtxReader__>
               {$ctx => (
-                <section
-                  data-plasmic-name={"section"}
-                  data-plasmic-override={overrides.section}
-                  className={classNames(projectcss.all, sty.section)}
-                >
-                  <h1
-                    data-plasmic-name={"h1"}
-                    data-plasmic-override={overrides.h1}
-                    className={classNames(
-                      projectcss.all,
-                      projectcss.h1,
-                      projectcss.__wab_text,
-                      sty.h1
-                    )}
+                <React.Fragment>
+                  <section
+                    data-plasmic-name={"section"}
+                    data-plasmic-override={overrides.section}
+                    className={classNames(projectcss.all, sty.section)}
                   >
-                    {"Untitled page"}
-                  </h1>
-                  <div
-                    data-plasmic-name={"text"}
-                    data-plasmic-override={overrides.text}
+                    <h1
+                      data-plasmic-name={"h1"}
+                      data-plasmic-override={overrides.h1}
+                      className={classNames(
+                        projectcss.all,
+                        projectcss.h1,
+                        projectcss.__wab_text,
+                        sty.h1
+                      )}
+                    >
+                      {"Untitled page"}
+                    </h1>
+                    <div
+                      className={classNames(
+                        projectcss.all,
+                        projectcss.__wab_text,
+                        sty.text__pZ6Ep
+                      )}
+                    >
+                      {
+                        "Press the big blue + button to insert components like Tables, Text, Buttons, and Forms.\n\nJoin our Slack Community (icon in bottom left) for help!"
+                      }
+                    </div>
+                  </section>
+                  <SupabaseProvider
+                    data-plasmic-name={"supabaseProvider"}
+                    data-plasmic-override={overrides.supabaseProvider}
                     className={classNames(
-                      projectcss.all,
-                      projectcss.__wab_text,
-                      sty.text
+                      "__wab_instance",
+                      sty.supabaseProvider
                     )}
-                  >
-                    {
-                      "Press the big blue + button to insert components like Tables, Text, Buttons, and Forms.\n\nJoin our Slack Community (icon in bottom left) for help!"
+                    columns={"*"}
+                    loading={
+                      <DataCtxReader__>
+                        {$ctx => (
+                          <div
+                            className={classNames(
+                              projectcss.all,
+                              projectcss.__wab_text,
+                              sty.text__mOvgY
+                            )}
+                          >
+                            {"Loading..."}
+                          </div>
+                        )}
+                      </DataCtxReader__>
                     }
-                  </div>
-                </section>
+                    noData={
+                      <DataCtxReader__>
+                        {$ctx => (
+                          <div
+                            className={classNames(
+                              projectcss.all,
+                              projectcss.__wab_text,
+                              sty.text___4JVvK
+                            )}
+                          >
+                            {"No data"}
+                          </div>
+                        )}
+                      </DataCtxReader__>
+                    }
+                    ref={ref => {
+                      $refs["supabaseProvider"] = ref;
+                    }}
+                    uniqueIdentifierField={"id"}
+                    validating={
+                      <DataCtxReader__>
+                        {$ctx => (
+                          <div
+                            className={classNames(
+                              projectcss.all,
+                              projectcss.__wab_text,
+                              sty.text__aV3Qf
+                            )}
+                          >
+                            {"Validating..."}
+                          </div>
+                        )}
+                      </DataCtxReader__>
+                    }
+                  >
+                    <DataCtxReader__>
+                      {$ctx => (
+                        <div
+                          className={classNames(
+                            projectcss.all,
+                            projectcss.__wab_text,
+                            sty.text__s51Z
+                          )}
+                        >
+                          {
+                            'INSTRUCTIONS FOR SUPABASE PROVIDER:\n            1. Click the new SupabaseProvider component in the Component tree (LHS of screen) to open it\'s settings\n            2. In settings on RHS of screen, choose a globally unique "Query name" (eg "/pagename/staff")\n            3. Enter the correct "table name" from Supabase (eg "staff")\n            4. On LHS of screen, change the name of SupabaseProvider to match the query name\n            5. Delete this placeholder text (from "children" slot). Then add components to "children" and use the dynamic data as you wish! :)'
+                          }
+                        </div>
+                      )}
+                    </DataCtxReader__>
+                  </SupabaseProvider>
+                </React.Fragment>
               )}
             </DataCtxReader__>
           </PageLayout>
@@ -207,11 +282,11 @@ function PlasmicHomepage__RenderFunc(props: {
 }
 
 const PlasmicDescendants = {
-  root: ["root", "pageLayout", "section", "h1", "text"],
-  pageLayout: ["pageLayout", "section", "h1", "text"],
-  section: ["section", "h1", "text"],
+  root: ["root", "pageLayout", "section", "h1", "supabaseProvider"],
+  pageLayout: ["pageLayout", "section", "h1", "supabaseProvider"],
+  section: ["section", "h1"],
   h1: ["h1"],
-  text: ["text"]
+  supabaseProvider: ["supabaseProvider"]
 } as const;
 type NodeNameType = keyof typeof PlasmicDescendants;
 type DescendantsType<T extends NodeNameType> =
@@ -221,7 +296,7 @@ type NodeDefaultElementType = {
   pageLayout: typeof PageLayout;
   section: "section";
   h1: "h1";
-  text: "div";
+  supabaseProvider: typeof SupabaseProvider;
 };
 
 type ReservedPropsType = "variants" | "args" | "overrides";
@@ -312,7 +387,7 @@ export const PlasmicHomepage = Object.assign(
     pageLayout: makeNodeComponent("pageLayout"),
     section: makeNodeComponent("section"),
     h1: makeNodeComponent("h1"),
-    text: makeNodeComponent("text"),
+    supabaseProvider: makeNodeComponent("supabaseProvider"),
 
     // Metadata about props expected for PlasmicHomepage
     internalVariantProps: PlasmicHomepage__VariantProps,
