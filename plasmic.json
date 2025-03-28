@@ -569,6 +569,12 @@
           "name": "SupabaseProvider",
           "displayName": "SupabaseProvider",
           "componentImportPath": "plasmic-supabase"
+        },
+        {
+          "id": "u9tgbRfyxEO_",
+          "name": "SupabaseUserGlobalContext",
+          "displayName": "SupabaseUserGlobalContext",
+          "componentImportPath": "plasmic-supabase"
         }
       ],
       "customFunctions": []
